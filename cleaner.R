@@ -1,0 +1,13 @@
+require("tm")
+
+args <- commandArgs(TRUE)
+if (length(args) != 2)
+	stop("usage: Rscript CTM_runner.R <inputdir> <outputdir>")
+print(args[1])
+news <- Corpus(DirSource(args[1]))
+news <- tm_map(news, content_transformer(tolower))
+news <- tm_map(news, removePunctuation)
+news <- tm_map(news, removeNumbers)
+news <- tm_map(news, removeWords, stopwords("english"))
+news <- tm_map(news, stripWhitespace)
+writeCorpus(news, path = args[2])
